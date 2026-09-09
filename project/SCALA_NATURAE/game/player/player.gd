@@ -27,8 +27,10 @@ var freeze := false
 
 var _head_rest := Vector3.ZERO
 var _lantern_noise := 0.0
+var _step_timer := 0.0
 
 func _ready() -> void:
+	add_to_group("player_body")
 	collision_layer = 4   # игрок: не задеваем ни интерактивные лучи (2), ни мир-лучи (1)
 	collision_mask = 1
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -68,6 +70,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 	_pulse(delta)
+	_step_sound(delta, move.length() > 0.01)
 	_headbob(delta, move.length() > 0.01)
 	_lantern_flicker(delta)
 	_detect_surface()
@@ -80,6 +83,14 @@ func _pulse(delta: float) -> void:
 	var breath := sin(t * 0.55) * 0.6
 	fov_pulse = move_toward(fov_pulse, breath, delta * 0.8)
 	cam.fov = base + fov_pulse
+
+func _step_sound(delta: float, moving: bool) -> void:
+	if not moving or not is_on_floor():
+		return
+	_step_timer -= delta
+	if _step_timer <= 0.0:
+		_step_timer = 0.46 if speed > 3.0 else 0.58
+		AudioMgr.footstep(surface, 1 if speed > 3.0 else 0)
 
 func _headbob(delta: float, moving: bool) -> void:
 	var target := 0.0

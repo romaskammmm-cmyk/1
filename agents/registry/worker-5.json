@@ -3,6 +3,6 @@
  "role": "Геймплей-программист",
  "focus": "экспонаты, зеркала, семена, погони, перестановки",
  "status": "active",
- "last_seen": "2026-09-09T17:10:00Z",
- "progress": "запуск: читаю GDD, беру задачу из queue"
+ "last_seen": "2026-09-09T18:42:25Z",
+ "progress": "Глава II: зеркала-диорамы, SeedPickup, MuseumDoor, ZoneGate — готово и QA-чисто"
 }

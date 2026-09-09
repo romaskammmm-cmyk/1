@@ -83,9 +83,23 @@ func set_tension(t: float) -> void:
 	## 0..1 — приподнимает дрон и шёпот
 	_set_drone_pitch(0.96 + t * 0.1)
 
-func whisper_random() -> void:
-	if randf() < 0.25:
-		play("whisper", -6.0, randf_range(0.9, 1.15))
+var _last_whisper := 0.0
+func whisper_random(force := false) -> void:
+	var now := Time.get_ticks_msec() / 1000.0
+	if now - _last_whisper < 3.0:
+		return
+	_last_whisper = now
+	var files := ["res://assets/audio/whisper0.wav", "res://assets/audio/whisper1.wav", "res://assets/audio/whisper2.wav"]
+	var pick: String = files[randi() % files.size()]
+	if not ResourceLoader.exists(pick):
+		return
+	var p := AudioStreamPlayer.new()
+	p.stream = load(pick)
+	p.volume_db = -9.0
+	p.pitch_scale = randf_range(0.85, 1.1)
+	add_child(p)
+	p.finished.connect(p.queue_free)
+	p.play()
 
 ## шаги: surf: "wood"/"mud"/"stone", state: 0 walk / 1 run
 func footstep(surf: String, state: int) -> void:

@@ -25,7 +25,9 @@ func apply_flags(game) -> void:
 		if d and d.has_method("force_open"):
 			d.force_open()
 
-func player_spawn() -> Dictionary:
+func player_spawn(spawn_name := "default") -> Dictionary:
+	if spawn_name == "shaft":
+		return {"pos": Vector3(2.4, -4.2, -35.2), "yaw": PI}
 	return {"pos": Vector3(0, 0.06, 15.2), "yaw": 0.0}
 
 func _process(_delta: float) -> void:
@@ -60,7 +62,7 @@ func _build_atrium() -> void:
 	# двери юга (закрыты, снаружи) и востока (залы I–VI, декоративные, закрыты)
 	_make_doors(Vector3(0, 0, 16.75), 2.1, 3.8, "ВХОД ДЛЯ СЛУЖАЩИХ", false)
 	_make_doors(Vector3(13.15, 0, -4), 5.0, 6.5, "ЗАЛЫ I–VI · ЭКСПОЗИЦИЯ НЕИЗМЕННА", true)
-	Kit.plate(self, Game.shift_label(), Vector3(0, 4.2, 16.0), 1.0, true)
+	Kit.plate(self, Game.shift_label(), Vector3(0, 4.2, 16.0), 1.0, true, PI)
 	# люстры и лампы
 	Kit.chandelier(self, Vector3(0, 11.6, 9))
 	Kit.chandelier(self, Vector3(0, 11.6, -7))
@@ -73,7 +75,7 @@ func _build_atrium() -> void:
 	Kit.rug(self, Vector3(0, 0, 8), 3.2, 15.0)
 	# таблички на стенах (северная и южная, т.к. quad без поворота)
 	Kit.plate(self, "MUSEUM HISTORIAE NATURALIS · EST. 1881", Vector3(3.5, 2.3, -16.84), 1.4, true)
-	Kit.plate(self, "ВХОД В ЭКСПОЗИЦИЮ ВОСПРЕЩЁН БЕЗ БИЛЕТА ВЕЧНОСТИ", Vector3(-4.0, 2.3, 16.84), 0.6, true)
+	Kit.plate(self, "ВХОД В ЭКСПОЗИЦИЮ ВОСПРЕЩЁН БЕЗ БИЛЕТА ВЕЧНОСТИ", Vector3(-4.0, 2.3, 16.84), 0.6, true, PI)
 	# гравюры на стенах
 	Kit.picture(self, "res://assets/prints/scala_chain.png", Vector3(5.8, 1.0, 16.8), 1.9, 2.6, PI)
 	Kit.picture(self, "res://assets/prints/vacua.png", Vector3(-5.8, 1.0, 16.8), 1.6, 2.19, PI)
@@ -370,6 +372,7 @@ func _build_hall4_shaft() -> void:
 	var stone := Kit.M("stone")
 	var brass := Kit.M("brass_dark")
 	var wood := Kit.mat("parquet_dark", Color(0.45, 0.38, 0.32), 0.6)
+	var black := Kit.M("black")
 	# дверь в проёме северной стены коридора (проём x 1.3..3.5, центр 2.4)
 	var door := MuseumDoor.new()
 	door.name = "DoorHall4"
@@ -377,46 +380,67 @@ func _build_hall4_shaft() -> void:
 	door.position = Vector3(2.4, 0, -22.88)
 	door.build_door(2.1, 2.4)
 	door.locked_flag = "key_hall4"
-	door.opens_with = "Заперто. Внизу табличка: «Ключ на гвозде в дежурке»."
+	door.opens_with = "Заперто. Ниже табличка: «Ключ на гвозде в дежурке»."
 	door.opened_flag = "door_h4_open"
 	Kit.door_frame(self, Vector3(2.4, 0, -22.88), 2.3, 2.5, 0.26, brass)
 	Kit.plate(self, "ЗАЛ №4 — СЛУЖЕБНЫЙ ВХОД", Vector3(2.4, 2.8, -22.6), 0.7)
 	door.door_opened.connect(_on_h4_opened)
-	# шахта: площадка, стены, лестница вниз, решётка
+	# шахта: площадка, стены, лестница вниз (12 ступеней, к северу)
 	Kit.mesh(self, wood, "box", Vector3(3.0, 0.12, 2.4), Vector3(2.4, -0.06, -24.5), Vector3.ZERO, true, "surf_wood")
-	# боковые стены шахты
 	Kit.mesh(self, stone, "box", Vector3(0.3, 4.6, 10.2), Vector3(0.75, -2.2, -27.4), Vector3.ZERO, true)
 	Kit.mesh(self, stone, "box", Vector3(0.3, 4.6, 10.2), Vector3(4.05, -2.2, -27.4), Vector3.ZERO, true)
-	# северная стена
-	Kit.mesh(self, stone, "box", Vector3(3.6, 4.6, 0.3), Vector3(2.4, -2.2, -32.6), Vector3.ZERO, true)
-	# лестница вниз (12 ступеней, к северу)
 	for i in range(12):
 		var y := -0.35 * (i + 1)
 		var z := -25.6 - 0.62 * i
 		Kit.mesh(self, stone, "box", Vector3(2.9, 0.14, 0.66), Vector3(2.4, y, z), Vector3.ZERO, true)
-	# решётка внизу
-	var gz := -32.2
-	for i in range(6):
-		Kit.mesh(self, brass, "cyl", Vector3(0.022, 2.2, 0), Vector3(1.15 + i * 0.5, -4.35 + 1.1, gz), Vector3.ZERO, true)
-	Kit.mesh(self, brass, "box", Vector3(3.0, 0.1, 0.06), Vector3(2.4, -3.3, gz))
-	Kit.mesh(self, brass, "box", Vector3(3.0, 0.1, 0.06), Vector3(2.4, -5.3, gz))
-	Kit.plate(self, "КРИПТА · ДАЛЕЕ ТОЛЬКО С РАЗРЕШЕНИЯ ДИРЕКТОРА", Vector3(2.4, -2.6, gz - 0.1), 1.3)
-	# болотный свет из-под решётки (предвкушение)
+	# северная стена с проёмом (пирсы + перемычка); проём x 1.35..3.45, y -4.45..-2.5
+	Kit.mesh(self, stone, "box", Vector3(0.75, 4.6, 0.3), Vector3(0.975, -2.2, -32.6), Vector3.ZERO, true)
+	Kit.mesh(self, stone, "box", Vector3(0.75, 4.6, 0.3), Vector3(3.825, -2.2, -32.6), Vector3.ZERO, true)
+	Kit.mesh(self, stone, "box", Vector3(3.6, 2.6, 0.3), Vector3(2.4, -1.2, -32.6), Vector3.ZERO, true)
+	Kit.plate(self, "КРИПТА · ДАЛЕЕ ТОЛЬКО С РАЗРЕШЕНИЯ ДИРЕКТОРА", Vector3(2.4, -2.2, -32.3), 1.3)
+	# решётка-дверь в проёме (открывается, когда гербарий ляжет на пьедестал)
+	var grate := MuseumDoor.new()
+	grate.name = "DoorCrypt"
+	add_child(grate)
+	grate.position = Vector3(2.4, -3.35, -32.62)
+	grate.build_door(2.05, 2.05)
+	grate.locked_flag = "placed_herbarium"
+	grate.opens_with = "Решётка заперта на висячий замок. Снизу тянет тиной и цветами."
+	grate.opened_flag = "grate_open"
+	grate.door_opened.connect(_on_crypt_opened)
+	# пол тамбура за решёткой (уровень последней ступени)
+	Kit.mesh(self, black, "box", Vector3(2.4, 0.14, 4.0), Vector3(2.4, -4.27, -34.6), Vector3.ZERO, true, "surf_stone")
+	# стены и потолок тамбура (низкий, каменный)
+	Kit.mesh(self, stone, "box", Vector3(0.24, 2.6, 4.2), Vector3(1.27, -3.2, -34.6), Vector3.ZERO, true)
+	Kit.mesh(self, stone, "box", Vector3(0.24, 2.6, 4.2), Vector3(3.53, -3.2, -34.6), Vector3.ZERO, true)
+	Kit.mesh(self, stone, "box", Vector3(2.5, 2.6, 0.24), Vector3(2.4, -3.2, -36.7), Vector3.ZERO, true)
+	Kit.mesh(self, black, "box", Vector3(2.5, 0.2, 4.2), Vector3(2.4, -1.9, -34.6))
+	# зелёное свечение сквозь щели дальней стены
 	var gl := OmniLight3D.new()
-	gl.position = Vector3(2.4, -5.4, gz + 1.4)
-	gl.light_color = Color(0.2, 0.75, 0.45)
-	gl.light_energy = 0.5
-	gl.omni_range = 4.0
+	gl.position = Vector3(2.4, -3.4, -36.3)
+	gl.light_color = Color(0.2, 0.8, 0.5)
+	gl.light_energy = 0.4
+	gl.omni_range = 3.4
 	add_child(gl)
 	var fl := LampFlicker.new()
 	fl.light_node = gl
+	fl.base_energy = 0.4
 	add_child(fl)
 	if not Game.has("saw_swamp_glow"):
 		Game.setf("saw_swamp_glow")
+	# портал в главу II (Крипта)
+	var gate := ZoneGate.new()
+	add_child(gate)
+	gate.setup("c2_vault", Vector3(2.4, -3.0, -35.6), Vector3(1.8, 2.2, 1.0), "default")
 
 func _on_h4_opened() -> void:
 	Game.diary_add_cond("h4_first", "self",
 		"За дверью №4 нет зала. Площадка и лестница вниз, в камень. Снизу пахнет тиной и — странно — цветами. Из глубины кто-то дышит в такт со мной.")
+
+func _on_crypt_opened() -> void:
+	AudioMgr.play("whoosh", -6.0, 0.85)
+	Game.diary_add_cond("crypt_grate", "self",
+		"Висячий замок щёлкнул сам, едва я коснулся решётки. Как будто музей ждал, пока я докажу, что виды — не клетки. Лестница вниз пахнет водой. Ханс, я иду.")
 
 # ============================================================ АНГЕЛЫ
 func _spawn_angels() -> void:

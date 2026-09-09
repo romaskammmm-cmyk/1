@@ -132,11 +132,11 @@ func reset_run() -> void:
 func start_game() -> void:
 	if chapter == "":
 		chapter = ZONE_C1
-	get_tree().change_scene_to_file("res://scenes/world.tscn")
+	get_tree().change_scene_to_file.call_deferred("res://scenes/world.tscn")
 
 func goto_menu() -> void:
 	chapter = ""
-	get_tree().change_scene_to_file("res://scenes/menu.tscn")
+	get_tree().change_scene_to_file.call_deferred("res://scenes/menu.tscn")
 
 func load_chapter(id: String) -> void:
 	chapter = id
@@ -151,6 +151,13 @@ func next_loop() -> void:
 	loop += 1
 	counters["shifts"] = loop + 1
 	save_game()
+
+func seed_count() -> int:
+	var n := 0
+	for k in ["specimen_taken_a", "specimen_taken_b", "specimen_taken_c"]:
+		if has(k):
+			n += 1
+	return n
 
 func shift_label() -> String:
 	return "СМЕНА №%d" % (counters.get("shifts", 1))

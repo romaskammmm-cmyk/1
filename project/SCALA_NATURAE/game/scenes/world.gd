@@ -4,9 +4,9 @@ extends Node3D
 const ZONE_SCRIPTS := {
 	"c1_museum": "res://zones/c1_museum.gd",
 	"c2_vault": "res://zones/c2_vault.gd",
-	"c3_swamp": "res://zones/c3_swamp.gd",
-	"c4_herbarium": "res://zones/c4_herbarium.gd",
-	"c5_finale": "res://zones/c5_finale.gd",
+	"c3_swamp": "res://zones/stub.gd",       # TODO c3 реальная
+	"c4_herbarium": "res://zones/stub.gd",   # TODO c4 реальная
+	"c5_finale": "res://zones/stub.gd",      # TODO c5 реальная
 }
 
 var player: Player = null
@@ -25,6 +25,7 @@ var fade_rect: ColorRect
 var hints: Label
 var _prompt_timer := 0.0
 var _fading := false
+var _spawn_name := "default"
 
 const WHO_COLOR := {
 	"self": "#b8b4a6", "water": "#9fc4b4", "director": "#c9b28a", "other": "#a8a89f",
@@ -38,9 +39,14 @@ func _ready() -> void:
 	_load_zone(Game.chapter if Game.chapter != "" else "c1_museum")
 	AudioMgr.start_ambient()
 	Game.prompt_hidden.emit()
-	if OS.get_cmdline_user_args().has("shots"):
+	var _qa_mode := false
+	for _a in OS.get_cmdline_user_args():
+		if String(_a).begins_with("--shots"):
+			_qa_mode = true
+	if _qa_mode:
 		var qa: Node = preload("res://scenes/qa_shots.gd").new()
 		add_child(qa)
+
 
 func _build_env() -> void:
 	var env := WorldEnvironment.new()
@@ -59,9 +65,9 @@ func _build_env() -> void:
 	e.glow_enabled = true
 	e.glow_intensity = 0.45
 	e.glow_bloom = 0.02
-	e.glow_levels = 3
-	e.ssao_enabled = true
-	e.ssao_intensity = 1.2
+	if ProjectSettings.get_setting("rendering/renderer/rendering_method", "forward_plus") == "forward_plus":
+		e.ssao_enabled = true
+		e.ssao_intensity = 1.2
 	e.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	e.adjustment_enabled = false
 	env.environment = e
@@ -129,6 +135,21 @@ func _build_ui() -> void:
 	vb.add_child(note_body)
 	Game.prompt_shown.connect(_on_prompt)
 	Game.fade_requested.connect(_on_fade_req)
+	_apply_fonts()
+
+const FONT_UI := "res://assets/fonts/DejaVuSerif.ttf"
+
+func _font_ui() -> Font:
+	return load(FONT_UI) if ResourceLoader.exists(FONT_UI) else ThemeDB.fallback_font
+
+func _apply_fonts() -> void:
+	var f: Font = _font_ui()
+	for n: Node in [prompt_label, diary_text, note_title, note_body]:
+		if n is Label:
+			n.add_theme_font_override("font", f)
+		elif n is RichTextLabel:
+			n.add_theme_font_override("normal_font", f)
+			n.add_theme_font_override("bold_font", load("res://assets/fonts/DejaVuSerif-Bold.ttf") if ResourceLoader.exists("res://assets/fonts/DejaVuSerif-Bold.ttf") else f)
 
 func _paper_panel() -> PanelContainer:
 	var p := PanelContainer.new()
@@ -208,18 +229,23 @@ func _load_zone(id: String) -> void:
 	var script: Script = load(path)
 	zone = Node3D.new()
 	zone.name = "Zone"
+	if script == null:
+		script = load(ZONE_SCRIPTS["c1_museum"])
 	zone.set_script(script)
 	add_child(zone)
 	Game.load_chapter(id)
-	zone.call("build", self)
+	if zone.has_method("build"):
+		zone.call("build", self)
 	Game.zone_ready(zone)
 	if zone.has_method("player_spawn"):
-		var sp: Dictionary = zone.call("player_spawn")
+		var sp: Dictionary = zone.call("player_spawn", _spawn_name)
 		relocate_player(sp.get("pos", Vector3.ZERO), float(sp.get("yaw", 0.0)))
+		_spawn_name = "default"
 	_refresh_diary()
 
-func goto_chapter(id: String) -> void:
+func goto_chapter(id: String, spawn_name := "default") -> void:
 	if _fading: return
+	_spawn_name = spawn_name
 	_fading = true
 	_on_fade_req("to_black")
 	await get_tree().create_timer(1.2).timeout

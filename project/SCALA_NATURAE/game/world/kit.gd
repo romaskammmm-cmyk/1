@@ -69,6 +69,11 @@ static func M(key: String) -> StandardMaterial3D:
 # ---------- геометрия ----------
 static func mesh(parent: Node3D, m: Material, kind: String = "box", size := Vector3.ONE, \
 		pos := Vector3.ZERO, rot := Vector3.ZERO, collide := true, group := "") -> MeshInstance3D:
+	if m == null:
+		push_error("KIT: null material kind=" + kind)
+		var fm := StandardMaterial3D.new()
+		fm.albedo_color = Color(1, 0, 1)
+		m = fm
 	var mi := MeshInstance3D.new()
 	parent.add_child(mi)
 	match kind:
@@ -209,11 +214,15 @@ static func pedestal(parent: Node3D, pos: Vector3, w: float, h: float, d: float,
 static var _plate_host: Node = null
 static var _plate_cache := {}
 static var _label_font: Font = null
-static func plate(parent: Node3D, text: String, pos: Vector3, w := 0.5, emissive := true) -> MeshInstance3D:
+static func label_font() -> Font:
+	if _label_font == null:
+		_label_font = load("res://assets/fonts/DejaVuSerif.ttf") if ResourceLoader.exists("res://assets/fonts/DejaVuSerif.ttf") else ThemeDB.fallback_font
+	return _label_font
+static func plate(parent: Node3D, text: String, pos: Vector3, w := 0.5, emissive := true, rot_y := 0.0) -> MeshInstance3D:
 	var vp: SubViewport = _plate_cache.get(text)
 	if vp == null:
 		if _label_font == null:
-			_label_font = ThemeDB.fallback_font
+			_label_font = label_font()
 		vp = SubViewport.new()
 		vp.size = Vector2i(512, 128)
 		vp.transparent_bg = true
@@ -260,6 +269,7 @@ static func plate(parent: Node3D, text: String, pos: Vector3, w := 0.5, emissive
 		m.emission_texture = vp.get_texture()
 	mi.material_override = m
 	mi.position = pos
+	mi.rotation.y = rot_y
 	parent.add_child(mi)
 	return mi
 
