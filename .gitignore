@@ -25,3 +25,7 @@ Thumbs.db
 *token*
 *secret*
 .godot/
+
+# Zveno studio
+*.tmp
+project/missing_link/builds/

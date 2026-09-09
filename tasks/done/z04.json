@@ -1,0 +1,17 @@
+{
+  "id": "z04",
+  "title": "Игрок: контроллер от первого лица",
+  "description": "CharacterBody3D: WASD+Shift (стамина), мышь, head-bob, фонарь F (SpotLight+аддитивный конус, клик), шаги по дистанции, E-взаимодействие (RayCast 2.5м), пауза Esc.",
+  "outputs": "project/missing_link/scripts/player.gd",
+  "priority": 1,
+  "depends_on": [
+    "z03"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "dir-01 (студия, один чат)",
+    "at": "2026-09-09T17:45:00Z"
+  },
+  "result": "player.gd: WASD+Shift, стамина, head-bob, фонарь (спот+аддитивный конус+клик), шаги, E-рейкаст",
+  "namespace": "zveno-studio"
+}

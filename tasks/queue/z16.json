@@ -1,0 +1,19 @@
+{
+  "id": "z16",
+  "title": "Глава 6 «Происхождение» + финалы",
+  "description": "Эндоскопия-нутро, погоня Стремления, 3 финала, 7 страниц письма.",
+  "outputs": [
+    "project/missing_link/scripts/chapter6/"
+  ],
+  "priority": 3,
+  "depends_on": [
+    "z15"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}

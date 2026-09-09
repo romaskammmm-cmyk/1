@@ -1,0 +1,19 @@
+{
+  "id": "z14",
+  "title": "Глава 4 «Оранжерея»",
+  "description": "Химеры, дебют Таксидермиста, растущий коридор-погоня, мутация Хвост.",
+  "outputs": [
+    "project/missing_link/scripts/chapter4/"
+  ],
+  "priority": 3,
+  "depends_on": [
+    "z13"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "z13",
+  "title": "Глава 3 «Архив»",
+  "description": "Тоннели, Крот (эхолокация), мягкий шаг, карточки №0, мутация Слух.",
+  "outputs": [
+    "project/missing_link/scripts/chapter3/"
+  ],
+  "priority": 3,
+  "depends_on": [
+    "z12"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}

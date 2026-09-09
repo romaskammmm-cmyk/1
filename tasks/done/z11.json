@@ -1,0 +1,20 @@
+{
+  "id": "z11",
+  "title": "Сборка Windows EXE",
+  "description": "Экспорт-шаблоны 4.4.1, export_presets.cfg (PCK в EXE, иконка), tools/build_exe.sh, тест размера.",
+  "outputs": [
+    "tools/build_exe.sh",
+    "project/missing_link/export_presets.cfg"
+  ],
+  "priority": 2,
+  "depends_on": [
+    "z09"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "build-09",
+    "at": "2026-09-09T17:58:00Z"
+  },
+  "result": "Windows EXE 104 МБ собран (Godot 4.4.1, embed PCK, GL Compat), опубликован как релиз v0.1.0-zveno-slice; export_presets.cfg + tools/build_exe.sh + icon.ico в репо",
+  "namespace": "zveno-studio"
+}

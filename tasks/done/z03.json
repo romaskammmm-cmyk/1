@@ -1,0 +1,22 @@
+{
+  "id": "z03",
+  "title": "Каркас проекта Godot 4.4",
+  "description": "project.godot (Compatibility/GL3, autoload Game), регистрация инпутов кодом, тема с кириллическим шрифтом, главное меню (фон-арт, кнопки, дрон), icon.svg.",
+  "outputs": [
+    "project/missing_link/project.godot",
+    "project/missing_link/autoload/game.gd",
+    "project/missing_link/scripts/main_menu.gd"
+  ],
+  "priority": 1,
+  "depends_on": [
+    "z01",
+    "z02"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "dir-01 (студия, один чат)",
+    "at": "2026-09-09T17:45:00Z"
+  },
+  "result": "project.godot (GL Compatibility), автолоад Game (инпуты кодом, тема с кириллицей), меню, icon.svg",
+  "namespace": "zveno-studio"
+}

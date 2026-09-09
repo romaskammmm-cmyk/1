@@ -1,0 +1,21 @@
+{
+  "id": "z09",
+  "title": "QA: smoke-тест + фото-сессия",
+  "description": "Headless smoke + фото-сессия под xvfb: 6+ скриншотов. Лог в project/docs/QA_LOG.md.",
+  "outputs": [
+    "project/missing_link/tests/smoke.gd",
+    "project/missing_link/scripts/photo_session.gd",
+    "project/docs/QA_LOG.md"
+  ],
+  "priority": 1,
+  "depends_on": [
+    "z08"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "dir-01 (студия, один чат)",
+    "at": "2026-09-09T17:45:00Z"
+  },
+  "result": "smoke 17/17 PASS; фото-сессия 10 кадров под xvfb/llvmpipe; QA_LOG.md",
+  "namespace": "zveno-studio"
+}

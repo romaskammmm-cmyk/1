@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>НЕДОСТАЮЩЕЕ ЗВЕНО — галерея разработки</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #0a0b0e; color: #cfc9b8; font-family: Georgia, 'Times New Roman', serif; }
+  .hero { position: relative; min-height: 420px; background: #000; overflow: hidden; display:flex; align-items:flex-end; }
+  .hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.75; }
+  .hero .t { position:relative; z-index:2; padding: 40px; background: linear-gradient(transparent, rgba(0,0,0,.92) 70%); width:100%; }
+  h1 { font-size: 44px; letter-spacing: 6px; color: #e8e2cf; }
+  .sub { color: #8a9179; margin-top: 8px; font-family: 'Courier New', monospace; font-size: 14px; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 30px 20px 60px; }
+  h2 { font-size: 15px; letter-spacing: 4px; color: #7d8570; border-bottom: 1px solid #23262b; padding: 26px 0 10px; margin-bottom: 18px; font-family: 'Courier New', monospace; text-transform: uppercase; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  figure { background: #101218; border: 1px solid #22262d; padding: 8px; }
+  figure img { width: 100%; display: block; }
+  figcaption { font-family: 'Courier New', monospace; font-size: 12.5px; color: #8f967f; padding: 8px 4px 2px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .stat { background: #101218; border: 1px solid #22262d; padding: 16px; }
+  .stat b { display:block; font-size: 30px; color: #b8c79a; font-family: 'Courier New', monospace; }
+  .stat span { font-size: 13px; color: #77806b; }
+  .ok { color: #9dc48a; } .warn { color: #c49a8a; }
+  p.note { color: #9aa08d; font-size: 15px; line-height: 1.65; margin: 8px 0 0; }
+  .lat { font-style: italic; color: #b9b19a; }
+  ul { margin: 8px 0 0 20px; line-height: 1.8; font-size: 15px; color: #9aa08d; }
+  .tag { display:inline-block; background:#1a1e25; border:1px solid #2c313a; color:#98a08c; border-radius:20px; padding:2px 12px; font-size:12px; font-family:'Courier New',monospace; margin: 2px 4px 2px 0;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <img src="../missing_link/art/menu_bg.png" alt="">
+  <div class="t">
+    <h1>НЕДОСТАЮЩЕЕ ЗВЕНО</h1>
+    <div class="sub">SPECIES INCOGNITA · ИЭТ · СТРЕЛЕЦК-14 · 1971<br>
+    вертикальный срез главы 1 «ЭКСПОЗИЦИЯ» · сборка сессии 1 · студия «Десять звеньев»</div>
+  </div>
+</div>
+<div class="wrap">
+
+  <h2>Состояние сессии 1</h2>
+  <div class="stats">
+    <div class="stat"><b class="ok">17/17</b><span>smoke-тест логики главы (headless)</span></div>
+    <div class="stat"><b>10</b><span>скриншотов QA-фотосессии (рендер работает)</span></div>
+    <div class="stat"><b>13</b><span>интерактивных объектов: печати, записки, алтарь, двери</span></div>
+    <div class="stat"><b>21</b><span>синтезированная звуковая дорожка (без единого сэмпла)</span></div>
+    <div class="stat"><b>3</b><span>бога эволюции: Устроитель · Стремление · Отбор (скрытый)</span></div>
+    <div class="stat"><b>6</b><span>глав в плане · цель ~2 часа игры</span></div>
+  </div>
+
+  <h2>Кадры из движка (фото-сессия qa-08, софтверный GL)</h2>
+  <div class="grid">
+    <figure><img src="../missing_link/tests/shots/01_rotunda_moon.png"><figcaption>Ротонда: лунный колодец над пустой витриной «Образец №0»</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/09_player_torch_rotunda.png"><figcaption>От лица хранителя: луч фонаря на витрину №0</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/03_west_hall.png"><figcaption>Западное крыло «Млекопитающие»</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/04_giraffe_fakes.png"><figcaption>Чучела жираф. Одно из них — не чучело.</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/10_player_torch_giraffe.png"><figcaption>ЖИРАФА в луче фонаря — Образец №007 «та, что доставала до верхних полок»</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/05_altar.png"><figcaption>Алтарь Стремления: первая сделка («Глаза троглобита»)</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/06_east_desk.png"><figcaption>Восточное крыло: стол смотрителя, ключ, дневник Ж.</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/07_cabinet.png"><figcaption>Кабинет хранителя: журнал смены («Образцов 214. Было 213.»)</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/02_center_case.png"><figcaption>Пустая витрина: полевой материал не поступал</figcaption></figure>
+    <figure><img src="../missing_link/tests/shots/08_giraffe_close.png"><figcaption>Она ближе, чем кажется</figcaption></figure>
+  </div>
+
+  <h2>2D-арт (art-04 · ИИ-генерация + зерно)</h2>
+  <div class="grid">
+    <figure><img src="../missing_link/art/menu_bg.png"><figcaption>Фон главного меню</figcaption></figure>
+    <figure><img src="../missing_link/art/scare_face.png"><figcaption>Скример поимки (экран смерти)</figcaption></figure>
+  </div>
+
+  <h2>Процедурные текстуры (art-04 · Python/PIL)</h2>
+  <figure><img src="tex_preview.jpg"><figcaption>Паркет · двухтонная стена · мрамор · шкура жирафы · этикетки · бумага · дверь</figcaption></figure>
+
+  <h2>Сюжет в двух словах</h2>
+  <p class="note">
+  Ночной хранитель Института Экспериментальной Таксономии заступает на смену — и слышит по громкой связи,
+  что объявлен розыск «Образца №0». Музей за ночь перестроился: коридоры длиннее, чем здание.
+  Сорок лет здесь ставили эксперименты по <span class="lat">«направленному стремлению»</span> — ламаркизм как технология:
+  потребность, усиленная достаточно долго, порождает орган. Получилось. Даже со зданием.
+  Два бога спорят о вас: <b>Устроитель</b> (Линней: «Бог создал — Линней расставил») хочет оформить вас в витрину —
+  идеально и навсегда; <b>Стремление</b> (Ламарк: потребность порождает орган) тянет вас в следующую ступень.
+  Каждая мутация меняет вас и ваше латинское имя в карточке вида: <span class="lat">Homo custos → Homo custos caecus</span>.
+  Есть и третий, чьё имя не произносят — <b>Отбор</b>. Финала три: «Витрина», «Звено», «Отбор» (секретный).
+  </p>
+
+  <h2>Дальше по плану (очередь задач)</h2>
+  <ul>
+    <li><span class="tag">t11</span> Сборка Windows EXE одним файлом (Godot 4.4.1, экспорт-шаблоны)</li>
+    <li><span class="tag">t12–t16</span> Главы 2–6: Затопленное крыло · Архив · Оранжерея · Зал Устроителя · Происхождение</li>
+    <li><span class="tag">t17</span> Пейсинг: правило 90 секунд, 4 скримера на игру, тишина перед финалами глав</li>
+    <li><span class="tag">t18</span> Релиз: установщик «скачал — играй»</li>
+  </ul>
+
+  <h2>Технологии</h2>
+  <ul>
+    <li>Godot 4.4.1, рендерер GL Compatibility — запустится на любом Windows, включая слабые ноутбуки</li>
+    <li>Вся геометрия, текстуры и звук генерируются кодом — репозиторий лёгкий, стиль цельный</li>
+    <li>QA-петля: headless smoke-тесты + фото-сессия на софтверном GL в песочнице</li>
+  </ul>
+</div>
+</body>
+</html>

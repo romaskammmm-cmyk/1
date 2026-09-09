@@ -1,0 +1,20 @@
+{
+  "id": "z18",
+  "title": "Релиз",
+  "description": "README установки, галерея, zip, версия.",
+  "outputs": [
+    "project/RELEASE.md"
+  ],
+  "priority": 4,
+  "depends_on": [
+    "z11",
+    "z17"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}
