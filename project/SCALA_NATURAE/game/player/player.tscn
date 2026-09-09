@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_player"]
+
+[sub_resource type="CapsuleShape3D" id="cap1"]
+radius = 0.34
+height = 1.55
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("cap1")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+fov = 72.0
+near = 0.06
+current = true
+
+[node name="Lantern" type="SpotLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.22, -0.5)
+light_color = Color(1, 0.72, 0.45, 1)
+light_energy = 1.9
+shadow_enabled = true
+spot_range = 26.0
+spot_angle = 42.0
+spot_attenuation = 1.4
+
+[node name="LanternGlow" type="OmniLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, -0.3, -0.2)
+light_color = Color(1, 0.7, 0.42, 1)
+light_energy = 0.9
+omni_range = 5.5
