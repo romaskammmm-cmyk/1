@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мульти-агентный пульт — запуск команды</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #0f1420; color: #e8ecf3; line-height: 1.55; }
+  header { padding: 22px 20px 10px; text-align: center; }
+  header h1 { margin: 0 0 4px; font-size: 24px; }
+  header p { margin: 0; color: #9aa6bd; font-size: 14px; }
+  nav { display: flex; gap: 8px; justify-content: center; padding: 14px 16px 0; flex-wrap: wrap; }
+  nav button { background: #1b2334; color: #cfd8ea; border: 1px solid #2c3a55; border-radius: 10px; padding: 10px 18px; font-size: 15px; cursor: pointer; }
+  nav button.active { background: #2f6df6; border-color: #2f6df6; color: #fff; font-weight: 600; }
+  main { max-width: 860px; margin: 0 auto; padding: 16px 16px 40px; }
+  section.tab { display: none; }
+  section.tab.active { display: block; }
+  .card { background: #161d2e; border: 1px solid #2c3a55; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  .card h2 { margin: 0 0 10px; font-size: 17px; }
+  label { display: block; font-size: 13px; color: #9aa6bd; margin: 10px 0 4px; }
+  input[type=text], input[type=password], input[type=number], textarea { width: 100%; background: #0d1322; color: #e8ecf3; border: 1px solid #2c3a55; border-radius: 8px; padding: 10px; font-size: 14px; font-family: inherit; }
+  textarea { resize: vertical; }
+  textarea.msg { font-family: Consolas, Menlo, monospace; font-size: 12.5px; height: 260px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn { background: #2f6df6; color: #fff; border: none; border-radius: 8px; padding: 11px 20px; font-size: 15px; cursor: pointer; margin-top: 12px; }
+  .btn:hover { background: #245cd6; }
+  .btn.small { padding: 7px 14px; font-size: 13px; margin-top: 8px; }
+  .btn.ghost { background: #1b2334; border: 1px solid #2c3a55; }
+  .hint { font-size: 13px; color: #9aa6bd; }
+  .warn { background: #2a1f10; border: 1px solid #7a5b21; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; margin: 12px 0; }
+  .err { background: #2a1215; border: 1px solid #7a2b2b; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; margin: 12px 0; }
+  .ok { background: #10261a; border: 1px solid #2b7a4b; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; margin: 12px 0; }
+  ol li, ul li { margin-bottom: 6px; }
+  a { color: #7aa8ff; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 8px; }
+  th, td { border: 1px solid #2c3a55; padding: 7px 9px; text-align: left; vertical-align: top; }
+  th { background: #1b2334; }
+  code { background: #0d1322; padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+  .pill { display: inline-block; padding: 1px 9px; border-radius: 20px; font-size: 12px; background: #1b2334; border: 1px solid #2c3a55; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🤖 Мульти-агентный пульт</h1>
+  <p>Запуск команды агентов, работающих сообща через GitHub-репозиторий</p>
+</header>
+<nav>
+  <button id="btn-launch" class="active" onclick="showTab('launch')">🚀 Запуск</button>
+  <button id="btn-guide" onclick="showTab('guide')">📖 Инструкция</button>
+  <button id="btn-status" onclick="showTab('status')">📊 Статус</button>
+</nav>
+<main>
+  <!-- ============ ЗАПУСК ============ -->
+  <section id="tab-launch" class="tab active">
+    <div class="card">
+      <h2>1. Данные для запуска</h2>
+      <label>Репозиторий (ссылка или owner/repo)</label>
+      <input type="text" id="repoInput" value="https://github.com/romaskammmm-cmyk/1">
+      <label>Токен GitHub (classic, со scope <code>repo</code>)</label>
+      <div class="row">
+        <input type="password" id="tokInput" placeholder="ghp_..." style="flex:1" autocomplete="off">
+        <button class="btn small ghost" onclick="toggleTok()">показать</button>
+      </div>
+      <div class="hint">Нет токена? Создайте: <b>github.com → аватар → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic)</b>, галочка <code>repo</code>. Токен никуда не отправляется — сообщения генерируются локально в этом файле.</div>
+      <label>Цель проекта (координатор разобьёт её на задачи)</label>
+      <textarea id="goalInput" rows="4" placeholder="Например: сверстать лендинг кофейни: шапка, меню, форма заказа, адаптив под мобильные. Всё в папке project/landing/."></textarea>
+      <label>Сколько воркеров запустить (рекомендуется 2–4)</label>
+      <input type="number" id="nInput" value="2" min="1" max="6" style="max-width:120px">
+      <br>
+      <button class="btn" onclick="generate()">Сгенерировать стартовые сообщения ⚙️</button>
+      <div id="genMsg"></div>
+    </div>
+    <div class="card" id="coordCard" style="display:none">
+      <h2>2. Сообщение для КООРДИНАТОРА <span class="pill">отдельный новый чат</span></h2>
+      <textarea id="outCoord" class="msg" readonly></textarea>
+      <button class="btn small" onclick="copyText('outCoord', this)">📋 Копировать</button>
+    </div>
+    <div id="workersOut"></div>
+    <div class="warn">⛔ <b>Безопасность:</b> в каждом сообщении есть ваш токен. После окончания работы отзовите его: <b>github.com → Settings → Personal access tokens → Delete</b>. Репозиторий публичный — секреты в него не класть.</div>
+  </section>
+
+  <!-- ============ ИНСТРУКЦИЯ ============ -->
+  <section id="tab-guide" class="tab">
+    <div class="card">
+      <h2>📖 Как запустить команду (5 минут)</h2>
+      <ol>
+        <li>Во вкладке <b>🚀 Запуск</b> вставьте токен, опишите цель проекта, выберите число воркеров и нажмите <b>«Сгенерировать»</b>.</li>
+        <li>Скопируйте сообщение координатора → откройте <b>новый чат</b> с агентом → вставьте → отправьте. Дождитесь ответа «готов».</li>
+        <li>Для каждого воркера повторите: <b>отдельный новый чат</b> + его сообщение. Один агент = один чат, иначе они перемешаются.</li>
+        <li>Наблюдайте во вкладке <b>📊 Статус</b> (нужен обычный браузер с интернетом) или прямо на странице репозитория на GitHub.</li>
+        <li>Координатор в конце напишет <code>project/REPORT.md</code> и сигнал <code>comms/broadcast/DONE.md</code> — работа окончена.</li>
+        <li><b>Отзовите токен</b> (Settings → Personal access tokens → Delete).</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h2>⚙️ Как это работает</h2>
+      <ul>
+        <li>Каждый агент живёт в своей песочнице, а <b>репозиторий — их общая память и почта</b>.</li>
+        <li>Координатор режет цель на задачи (<code>tasks/queue/*.json</code>), воркеры разбирают их по правилу «кто первым запушил — того и задача».</li>
+        <li>Общение — через файлы: <code>comms/broadcast/</code> (всем) и <code>comms/inbox/&lt;агент&gt;/</code> (лично). Задержка — минуты, это нормально.</li>
+        <li>Каждый агент шлёт heartbeat в <code>agents/registry/</code> — видно, кто жив и чем занят.</li>
+        <li>Все правила — в файле <code>agents/PROTOCOL.md</code> в репозитории. Это «закон», которому следует каждый агент.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>❓ Частые вопросы</h2>
+      <ul>
+        <li><b>Сколько воркеров?</b> 2–4. Больше — толкутся и конфликтуют в git.</li>
+        <li><b>Агенты видят друг друга в реальном времени?</b> Нет. Только через репозиторий с задержкой в минуты. Для параллельной работы по файлам этого хватает.</li>
+        <li><b>Git-конфликты?</b> Протокол их почти исключает: каждый пишет в свои файлы, задачи разбираются правилом first-push-wins.</li>
+        <li><b>Агент завис?</b> Напишите ему в его чат «сделай git pull --rebase, проверь inbox и продолжай». Если молчит дольше 20 минут — координатор вернёт его задачу в очередь сам.</li>
+        <li><b>Хочу остановить всё?</b> Попросите координатора в его чате завершить работу (он напишет DONE.md), либо просто закройте чаты.</li>
+        <li><b>Лимит воркспейса 128 МБ?</b> Агенты пушат готовое в репозиторий и чистят локальные копии — репозиторий работает как внешний диск.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ СТАТУС ============ -->
+  <section id="tab-status" class="tab">
+    <div class="card">
+      <h2>📊 Статус команды</h2>
+      <div class="hint">Опрашивает публичный API GitHub. Работает только в обычном браузере с интернетом (в предпросмотре чата сети нет — скачайте файл и откройте его).</div>
+      <label>Репозиторий (owner/repo)</label>
+      <div class="row">
+        <input type="text" id="stRepo" value="romaskammmm-cmyk/1" style="flex:1">
+        <button class="btn small" style="margin-top:0" onclick="loadStatus()">🔄 Обновить</button>
+      </div>
+      <div id="stOut" style="margin-top:12px"><span class="hint">Нажмите «Обновить».</span></div>
+    </div>
+  </section>
+</main>
+<script>
+function showTab(name) {
+  document.querySelectorAll('section.tab').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('btn-' + name).classList.add('active');
+}
+function toggleTok() {
+  var t = document.getElementById('tokInput');
+  t.type = (t.type === 'password') ? 'text' : 'password';
+}
+function parseRepo(input) {
+  input = (input || '').trim().replace(/\/+$/, '');
+  var m = input.match(/github\.com\/([^\/\s]+)\/([^\/\s\.]+)(\.git)?/i);
+  if (m) return { owner: m[1], name: m[2] };
+  m = input.match(/^([^\/\s]+)\/([^\/\s\.]+)(\.git)?$/);
+  if (m) return { owner: m[1], name: m[2] };
+  return null;
+}
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function coordMsg(repo, owner, name, token, goal) {
+  return 'Ты — КООРДИНАТОР (AGENT_ID: coord-1) мульти-агентной команды. Вы работаете через общий GitHub-репозиторий как через общую память и почту.\n\n'
+  + 'РЕПОЗИТОРИЙ: ' + repo + '\nТОКЕН ДЛЯ ЗАПИСИ: ' + token + '\n\n'
+  + 'BOOTSTRAP — выполни прямо сейчас:\n'
+  + '1) git clone --depth 1 ' + repo + '.git multi && cd multi\n'
+  + '2) git config user.name "coord-1" && git config user.email "coord-1@agents.local"\n'
+  + '3) git remote set-url origin https://' + token + '@github.com/' + owner + '/' + name + '.git\n'
+  + '4) Прочти ЦЕЛИКОМ: agents/README.md, agents/PROTOCOL.md, agents/ROLES.md, tasks/README.md, comms/README.md\n'
+  + '5) Зарегистрируйся: создай agents/registry/coord-1.json по разделу 3 протокола, затем commit + push\n'
+  + '6) Подтверди мне в чат, что готов\n\n'
+  + 'ЦЕЛЬ ПРОЕКТА:\n' + goal + '\n\n'
+  + 'ТВОЯ РАБОТА (плюс agents/ROLES.md):\n'
+  + '- Разбей цель на задачи по 15-40 минут, независимые по файлам; создай tasks/queue/t01.json, t02.json... строго по tasks/_TEMPLATE.json (outputs — точные пути, priority, depends_on)\n'
+  + '- Напиши стартовый broadcast в comms/broadcast/\n'
+  + '- Следи за registry (heartbeat), inbox и broadcast; отвечай воркерам; зависшие задачи (автор молчит дольше 20 минут) возвращай в очередь\n'
+  + '- Проверяй готовые задачи; финал: project/REPORT.md + comms/broadcast/DONE.md\n'
+  + '- Работай циклами: sync (git pull --rebase + git push) — проверить почту и registry — действовать — heartbeat — push\n\n'
+  + 'Железные правила: протокол — закон; никогда git push --force; не редактируй чужие registry-файлы; всё общение — через репозиторий.';
+}
+function workerMsg(n, repo, owner, name, token, goal) {
+  var id = 'worker-' + n;
+  return 'Ты — ВОРКЕР (AGENT_ID: ' + id + ') в мульти-агентной команде. Общий GitHub-репозиторий — ваша общая память и почта. Координатор — coord-1.\n\n'
+  + 'РЕПОЗИТОРИЙ: ' + repo + '\nТОКЕН ДЛЯ ЗАПИСИ: ' + token + '\n\n'
+  + 'BOOTSTRAP — выполни прямо сейчас:\n'
+  + '1) git clone --depth 1 ' + repo + '.git multi && cd multi\n'
+  + '2) git config user.name "' + id + '" && git config user.email "' + id + '@agents.local"\n'
+  + '3) git remote set-url origin https://' + token + '@github.com/' + owner + '/' + name + '.git\n'
+  + '4) Прочти ЦЕЛИКОМ: agents/README.md, agents/PROTOCOL.md, agents/ROLES.md, tasks/README.md, comms/README.md\n'
+  + '5) Зарегистрируйся: создай agents/registry/' + id + '.json (role: worker) по разделу 3 протокола, затем commit + push\n'
+  + '6) Подтверди мне в чат, что готов\n\n'
+  + 'ЦЕЛЬ ПРОЕКТА:\n' + goal + '\n\n'
+  + 'ТВОЯ РАБОТА (плюс agents/ROLES.md, раздел Воркер):\n'
+  + '- Бесконечный цикл: git pull --rebase — прочитать comms/inbox/' + id + '/ и comms/broadcast/ — взять задачу из tasks/queue/ (claim по разделу 5 протокола) — работать — heartbeat каждые ~5 минут — done — push — повторить\n'
+  + '- Файлы пиши ТОЛЬКО в пути outputs своей задачи\n'
+  + '- Видишь comms/broadcast/DONE.md — финальный push со статусом done и стоп\n'
+  + '- Очередь пуста — сообщи в broadcast, проверь inbox, помоги ревью; задачи сам не выдумывай\n\n'
+  + 'Железные правила: протокол — закон; никогда git push --force; один воркер — одна активная задача.';
+}
+function generate() {
+  var box = document.getElementById('genMsg');
+  var r = parseRepo(document.getElementById('repoInput').value);
+  var token = document.getElementById('tokInput').value.trim();
+  var goal = document.getElementById('goalInput').value.trim();
+  var n = Math.max(1, Math.min(6, parseInt(document.getElementById('nInput').value || '2', 10)));
+  if (!r) { box.innerHTML = '<div class="err">❌ Не понял адрес репозитория. Формат: https://github.com/owner/repo или owner/repo</div>'; return; }
+  if (!token) { box.innerHTML = '<div class="err">❌ Вставьте токен GitHub (без него агенты смогут только читать, но не писать).</div>'; return; }
+  if (!goal) { box.innerHTML = '<div class="err">❌ Опишите цель проекта — координатору будет нечего делить на задачи.</div>'; return; }
+  var repo = 'https://github.com/' + r.owner + '/' + r.name;
+  document.getElementById('outCoord').value = coordMsg(repo, r.owner, r.name, token, goal);
+  document.getElementById('coordCard').style.display = 'block';
+  var w = document.getElementById('workersOut');
+  w.innerHTML = '';
+  for (var i = 1; i <= n; i++) {
+    var d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = '<h2>Сообщение для ВОРКЕРА-' + i + ' <span class="pill">отдельный новый чат</span></h2>'
+      + '<textarea id="outW' + i + '" class="msg" readonly></textarea>'
+      + '<button class="btn small" onclick="copyText(\'outW' + i + '\', this)">📋 Копировать</button>';
+    w.appendChild(d);
+    document.getElementById('outW' + i).value = workerMsg(i, repo, r.owner, r.name, token, goal);
+  }
+  box.innerHTML = '<div class="ok">✅ Готово: 1 координатор + ' + n + ' воркер(а). Раздайте сообщения по отдельным новым чатам (сначала координатору). Подробности — во вкладке 📖 Инструкция.</div>';
+  document.getElementById('coordCard').scrollIntoView();
+}
+function copyText(id, btn) {
+  var ta = document.getElementById(id);
+  function done(ok) {
+    var old = btn.textContent;
+    btn.textContent = ok ? '✅ Скопировано!' : '⚠️ Не вышло — выделите вручную (Ctrl+A, Ctrl+C)';
+    setTimeout(function(){ btn.textContent = old; }, 2500);
+  }
+  ta.select();
+  try { ta.setSelectionRange(0, ta.value.length); } catch(e) {}
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(ta.value).then(function(){ done(true); }, function(){ done(document.execCommand('copy')); });
+  } else {
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e) {}
+    done(ok);
+  }
+}
+async function ghList(owner, name, path) {
+  var r = await fetch('https://api.github.com/repos/' + owner + '/' + name + '/contents/' + path);
+  if (r.status === 404) return [];
+  if (!r.ok) throw new Error('GitHub API: ' + r.status);
+  var j = await r.json();
+  return Array.isArray(j) ? j : [];
+}
+async function ghJson(url) {
+  var r = await fetch(url);
+  if (!r.ok) throw new Error('fetch ' + r.status);
+  return r.json();
+}
+async function loadStatus() {
+  var out = document.getElementById('stOut');
+  var r = parseRepo(document.getElementById('stRepo').value);
+  if (!r) { out.innerHTML = '<div class="err">❌ Не понял адрес репозитория.</div>'; return; }
+  out.innerHTML = '<span class="hint">Загружаю...</span>';
+  try {
+    var reg = await ghList(r.owner, r.name, 'agents/registry');
+    var q = await ghList(r.owner, r.name, 'tasks/queue');
+    var ip = await ghList(r.owner, r.name, 'tasks/in-progress');
+    var dn = await ghList(r.owner, r.name, 'tasks/done');
+    var bc = await ghList(r.owner, r.name, 'comms/broadcast');
+    var files = function(a){ return a.filter(function(f){ return f.name !== '.keep'; }); };
+    reg = files(reg); q = files(q); ip = files(ip); dn = files(dn); bc = files(bc);
+    var html = '<div class="row" style="gap:14px">'
+      + '<span class="pill">🤖 Агентов: <b>' + reg.length + '</b></span>'
+      + '<span class="pill">📥 Очередь: <b>' + q.length + '</b></span>'
+      + '<span class="pill">⚙️ В работе: <b>' + ip.length + '</b></span>'
+      + '<span class="pill">✅ Готово: <b>' + dn.length + '</b></span>'
+      + '<span class="pill">📢 Broadcasts: <b>' + bc.length + '</b></span></div>';
+    if (bc.some(function(f){ return f.name === 'DONE.md'; })) html += '<div class="ok">🏁 Координатор объявил DONE — работа завершена.</div>';
+    if (reg.length) {
+      html += '<h3 style="margin:14px 0 4px">Агенты</h3><table><tr><th>ID</th><th>Роль</th><th>Статус</th><th>Задача</th><th>Прогресс</th><th>Активность (UTC)</th></tr>';
+      var infos = await Promise.all(reg.map(function(f){ return ghJson(f.download_url).catch(function(){ return { id: f.name }; }); }));
+      infos.forEach(function(a){
+        html += '<tr><td>' + esc(a.id || '?') + '</td><td>' + esc(a.role || '?') + '</td><td>' + esc(a.status || '?') + '</td><td>' + esc(a.current_task || '—') + '</td><td>' + esc(a.progress || '—') + '</td><td>' + esc((a.last_seen || '').replace('T',' ').replace('Z','')) + '</td></tr>';
+      });
+      html += '</table>';
+    } else {
+      html += '<div class="hint" style="margin-top:10px">Агентов пока нет — никто не зарегистрировался.</div>';
+    }
+    function taskTable(title, arr) {
+      if (!arr.length) return '';
+      var h = '<h3 style="margin:14px 0 4px">' + title + ' (' + arr.length + ')</h3><table><tr><th>ID</th><th>Название</th><th>Приоритет</th><th>Автор</th></tr>';
+      arr.forEach(function(f){ h += '<tr><td colspan="4">' + esc(f.name) + '</td></tr>'; });
+      return h + '</table>';
+    }
+    html += taskTable('📥 Очередь', q) + taskTable('⚙️ В работе', ip) + taskTable('✅ Готово', dn);
+    if (bc.length) {
+      html += '<h3 style="margin:14px 0 4px">📢 Последние broadcasts</h3><table>';
+      bc.slice(-8).reverse().forEach(function(f){ html += '<tr><td>' + esc(f.name) + '</td></tr>'; });
+      html += '</table>';
+    }
+    out.innerHTML = html;
+  } catch(e) {
+    out.innerHTML = '<div class="err">❌ Не удалось опросить GitHub: ' + esc(e.message) + '. Откройте этот файл в обычном браузере с интернетом (в предпросмотре чата сети нет). Если ошибка 403 — подождите, это лимит GitHub API.</div>';
+  }
+}
+</script>
+</body>
+</html>
