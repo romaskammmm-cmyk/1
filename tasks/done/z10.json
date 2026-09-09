@@ -1,0 +1,20 @@
+{
+  "id": "z10",
+  "title": "2D-арт: фон меню + скример",
+  "description": "AI-генерация: фон меню, лицо скримера. Обработка: зерно, CRT.",
+  "outputs": [
+    "project/missing_link/art/menu_bg.png",
+    "project/missing_link/art/scare_face.png"
+  ],
+  "priority": 2,
+  "depends_on": [
+    "z03"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "dir-01 (студия, один чат)",
+    "at": "2026-09-09T17:45:00Z"
+  },
+  "result": "menu_bg.png и scare_face.png сгенерированы ИИ, подключены в меню и экран смерти",
+  "namespace": "zveno-studio"
+}

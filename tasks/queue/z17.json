@@ -1,0 +1,19 @@
+{
+  "id": "z17",
+  "title": "Баланс и пейсинг",
+  "description": "Правило 90 секунд, 4 скримера, тишина перед финалами глав.",
+  "outputs": [
+    "project/docs/QA_LOG.md"
+  ],
+  "priority": 4,
+  "depends_on": [
+    "z16"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}

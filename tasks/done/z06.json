@@ -1,0 +1,19 @@
+{
+  "id": "z06",
+  "title": "ИИ Жирафы",
+  "description": "Стейт-машина: POSING/STALK/CHASE/поимка. Взгляд игрока+фонарь останавливают. Обход препятствий лучами. Респавн после смерти игрока.",
+  "outputs": [
+    "project/missing_link/scripts/giraffe.gd"
+  ],
+  "priority": 1,
+  "depends_on": [
+    "z05"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "dir-01 (студия, один чат)",
+    "at": "2026-09-09T17:45:00Z"
+  },
+  "result": "giraffe.gd: POSING/STALK/WINDUP/CHASE, стоп от луча фонаря, скрипы, стинг, поимка→смерть, респавн",
+  "namespace": "zveno-studio"
+}

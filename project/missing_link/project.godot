@@ -1,0 +1,29 @@
+; Engine configuration file.
+; НЕДОСТАЮЩЕЕ ЗВЕНО — Godot 4.4 [build-09]
+config_version=5
+
+[application]
+
+config/name="Недостающее звено"
+config/description="Атмосферный 3D-хоррор об эволюции. Институт Экспериментальной Таксономии ждёт Образец №0."
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Game="*res://autoload/game.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.015, 0.015, 0.02, 1)

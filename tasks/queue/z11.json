@@ -1,0 +1,20 @@
+{
+  "id": "z11",
+  "title": "Сборка Windows EXE",
+  "description": "Экспорт-шаблоны 4.4.1, export_presets.cfg (PCK в EXE, иконка), tools/build_exe.sh, тест размера.",
+  "outputs": [
+    "tools/build_exe.sh",
+    "project/missing_link/export_presets.cfg"
+  ],
+  "priority": 2,
+  "depends_on": [
+    "z09"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}

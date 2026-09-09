@@ -1,0 +1,19 @@
+{
+  "id": "z15",
+  "title": "Глава 5 «Зал Устроителя»",
+  "description": "Босс-головоломка: определить Таксидермиста подменой этикетки, 3 такта.",
+  "outputs": [
+    "project/missing_link/scripts/chapter5/"
+  ],
+  "priority": 3,
+  "depends_on": [
+    "z14"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "z08",
+  "title": "Логика главы 1",
+  "description": "3 печати, ключ, 4 записки, алтарь Стремления, PA-таймлайн, дверь Зала Происхождения, конец среза, чекпоинты+автосейв.",
+  "outputs": [
+    "project/missing_link/scripts/chapter1.gd",
+    "project/missing_link/scripts/interactables.gd"
+  ],
+  "priority": 1,
+  "depends_on": [
+    "z04",
+    "z05",
+    "z06",
+    "z07"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": "dir-01 (студия, один чат)",
+    "at": "2026-09-09T17:45:00Z"
+  },
+  "result": "chapter1.gd: 3 печати, ключ, 4 записки, алтарь Стремления, PA-таймлайн, дверь Происхождения, чекпоинты+автосейв",
+  "namespace": "zveno-studio"
+}

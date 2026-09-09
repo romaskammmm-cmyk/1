@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_pl"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_pl")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+fov = 74.0
+near = 0.05
+
+[node name="Flashlight" type="SpotLight3D" parent="Head"]
+spot_range = 19.0
+spot_angle = 27.0
+
+[node name="Beam" type="MeshInstance3D" parent="Head"]
+
+[node name="InteractRay" type="RayCast3D" parent="Head"]
+
+[node name="StepPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="HeartPlayer" type="AudioStreamPlayer" parent="."]

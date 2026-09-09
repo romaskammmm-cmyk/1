@@ -1,0 +1,19 @@
+{
+  "id": "z12",
+  "title": "Глава 2 «Затопленное крыло»",
+  "description": "Вода, Ныряльщик (охота на звук), 3 катушки хроники, мутация Лёгкие, страницы письма 1-2.",
+  "outputs": [
+    "project/missing_link/scripts/chapter2/"
+  ],
+  "priority": 3,
+  "depends_on": [
+    "z09"
+  ],
+  "created_by": "dir-01",
+  "claim": {
+    "by": null,
+    "at": null
+  },
+  "result": null,
+  "namespace": "zveno-studio"
+}
