@@ -3,6 +3,6 @@
   "role": "studio-link",
   "status": "working",
   "current_task": null,
-  "progress": "готовит экспорт Windows (следующий шаг: шаблоны 4.4.1)",
-  "last_seen": "2026-09-09T17:45:00Z"
+  "progress": "EXE собран и опубликован в GitHub Releases (v0.1.0-zveno-slice)",
+  "last_seen": "2026-09-09T17:58:00Z"
 }

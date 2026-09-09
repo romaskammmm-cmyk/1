@@ -3,6 +3,6 @@
   "role": "studio-link",
   "status": "working",
   "current_task": null,
-  "progress": "smoke PASS; метрики яркости сняты; QA_LOG сессия 1",
-  "last_seen": "2026-09-09T17:45:00Z"
+  "progress": "сборка проверена: MZ-заголовок, 104 МБ, state=uploaded",
+  "last_seen": "2026-09-09T17:58:00Z"
 }
