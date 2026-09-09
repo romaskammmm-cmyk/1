@@ -1,0 +1,8 @@
+{
+ "id": "worker-3",
+ "role": "Программист ядра",
+ "focus": "FPS-контроллер, autoload, ввод",
+ "status": "active",
+ "last_seen": "2026-09-09T17:10:00Z",
+ "progress": "запуск: читаю GDD, беру задачу из queue"
+}
