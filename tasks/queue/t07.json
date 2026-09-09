@@ -1,0 +1,19 @@
+{
+ "id": "t07",
+ "title": "Главы I-II",
+ "description": "Вестибюль, залы, Зал №4, крипта Непризнанных, перестановки",
+ "outputs": [
+  "scala-naturae/zones/"
+ ],
+ "priority": 4,
+ "depends_on": [
+  "t05",
+  "t06"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

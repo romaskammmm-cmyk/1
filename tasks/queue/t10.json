@@ -1,0 +1,18 @@
+{
+ "id": "t10",
+ "title": "Звук",
+ "description": "Процедурные WAV: дроны, шаги, шёпот, дыхание; аудио-менеджер",
+ "outputs": [
+  "scala-naturae/assets/audio/"
+ ],
+ "priority": 4,
+ "depends_on": [
+  "t02"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

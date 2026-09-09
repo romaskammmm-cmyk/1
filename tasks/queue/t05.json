@@ -1,0 +1,18 @@
+{
+ "id": "t05",
+ "title": "Сущности хоррора",
+ "description": "Экспонаты-ангелы, зеркала, 3D-записки, двери-ключи, семена",
+ "outputs": [
+  "scala-naturae/entities/"
+ ],
+ "priority": 3,
+ "depends_on": [
+  "t04"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

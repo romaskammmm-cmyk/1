@@ -1,0 +1,18 @@
+{
+ "id": "t06",
+ "title": "Контент-данные и дневник",
+ "description": "JSON табличек/записок/дневника/диалогов; UI дневника",
+ "outputs": [
+  "scala-naturae/content/"
+ ],
+ "priority": 3,
+ "depends_on": [
+  "t02"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

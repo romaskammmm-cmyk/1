@@ -1,0 +1,18 @@
+{
+ "id": "t08",
+ "title": "Глава III Болото",
+ "description": "Вода, светляки, Росток-погоня, посадка семян, корень Лестницы",
+ "outputs": [
+  "scala-naturae/zones/"
+ ],
+ "priority": 4,
+ "depends_on": [
+  "t07"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

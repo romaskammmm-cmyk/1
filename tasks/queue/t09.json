@@ -1,0 +1,18 @@
+{
+ "id": "t09",
+ "title": "Главы IV-V и финалы",
+ "description": "Музей-гербарий, Директор, 3 финала, петля, титры",
+ "outputs": [
+  "scala-naturae/zones/"
+ ],
+ "priority": 5,
+ "depends_on": [
+  "t08"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

@@ -1,0 +1,18 @@
+{
+ "id": "t03",
+ "title": "Процедурные текстуры",
+ "description": "Python-генератор PNG: паркет, мрамор, латунь, бархат, бумага, грязь, гравюры",
+ "outputs": [
+  "scala-naturae/tools/gen_textures.py"
+ ],
+ "priority": 2,
+ "depends_on": [
+  "t01"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

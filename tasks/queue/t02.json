@@ -1,0 +1,16 @@
+{
+ "id": "t02",
+ "title": "Каркас Godot-проекта",
+ "description": "project.godot (Forward+, туман), autoload: game/diary/audio_mgr/notes, FPS-контроллер смотрителя, фонарь, E-взаимодействие",
+ "outputs": [
+  "scala-naturae/project.godot"
+ ],
+ "priority": 2,
+ "depends_on": [],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

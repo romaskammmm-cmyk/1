@@ -1,0 +1,19 @@
+{
+ "id": "t11",
+ "title": "QA-прогоны и полировка",
+ "description": "Headless-тесты, исправления, настройка атмосферы",
+ "outputs": [
+  "scala-naturae/docs/QA.md"
+ ],
+ "priority": 5,
+ "depends_on": [
+  "t09",
+  "t10"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

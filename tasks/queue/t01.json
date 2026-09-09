@@ -1,0 +1,16 @@
+{
+ "id": "t01",
+ "title": "Регистрация команды и GDD",
+ "description": "Регистрация 10 агентов, очередь задач, GDD v1.0",
+ "outputs": [
+  "project/SCALA_NATURAE/GDD.md"
+ ],
+ "priority": 1,
+ "depends_on": [],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

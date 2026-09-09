@@ -1,0 +1,19 @@
+{
+ "id": "t04",
+ "title": "Кит-конструктор мира",
+ "description": "kit.gd + mat_lib.gd; сборка Атриума с Лестницей Природы",
+ "outputs": [
+  "scala-naturae/world/kit.gd"
+ ],
+ "priority": 3,
+ "depends_on": [
+  "t02",
+  "t03"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}

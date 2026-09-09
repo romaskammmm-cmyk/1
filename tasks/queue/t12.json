@@ -1,0 +1,18 @@
+{
+ "id": "t12",
+ "title": "Экспорт и релиз",
+ "description": "Windows .exe + Linux, README-инструкция, релиз GitHub Releases, REPORT.md",
+ "outputs": [
+  "release/"
+ ],
+ "priority": 6,
+ "depends_on": [
+  "t11"
+ ],
+ "created_by": "coord-1",
+ "claim": {
+  "by": null,
+  "at": null
+ },
+ "result": null
+}
